@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use File;
+
 class UserProductController extends Controller
 {
     /**
@@ -15,9 +16,9 @@ class UserProductController extends Controller
     public function index()
     {
         $products = Product::where(['user_id' => Auth::user()->id])
-        ->orderBy('id', 'DESC')
-        ->get();
-       // dd($products);
+            ->orderBy('id', 'DESC')
+            ->get();
+        // dd($products);
         return view('user.product.index', compact('products'));
     }
 
@@ -37,13 +38,13 @@ class UserProductController extends Controller
         //dd($request->all());
         $request->validate([
             'name' => ['required'],
-            'qty'=> ['required'],
-            'price'=> ['required']
+            'qty' => ['required'],
+            'price' => ['required']
         ]);
 
 
-         $product = new Product();
-   if ($request->hasFile('thumb_image')) {
+        $product = new Product();
+        if ($request->hasFile('thumb_image')) {
             $document = $request->file('thumb_image');
             $newName = rand() . '.' . $document->getClientOriginalName();
             $document->move(public_path('uploads/'), $newName);
@@ -51,7 +52,7 @@ class UserProductController extends Controller
             $product->thumb_image = $path;
         }
 
-       
+
         $product->user_id = Auth::user()->id;
         $product->name = $request->name;
         $product->qty = $request->qty;
@@ -60,7 +61,7 @@ class UserProductController extends Controller
         $product->short_desc = $request->short_desc;
         $product->status = $request->status;
         $product->save();
-       
+
         return redirect()->route('user.product.index');
     }
 
@@ -87,27 +88,27 @@ class UserProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-            $request->validate([
+        $request->validate([
             'name' => ['required'],
-            'qty'=> ['required'],
-            'price'=> ['required']
+            'qty' => ['required'],
+            'price' => ['required']
         ]);
 
 
-         $product = Product::findOrFail($id);
-      if($request->hasFile('thumb_image')){
+        $product = Product::findOrFail($id);
+        if ($request->hasFile('thumb_image')) {
             if (File::exists(public_path($product->thumb_image))) {
                 File::delete(public_path($product->thumb_image));
             }
 
             $thumb_image = $request->thumb_image;
-            $new_name = rand().'.'.$thumb_image->getClientOriginalName();
+            $new_name = rand() . '.' . $thumb_image->getClientOriginalName();
             $thumb_image->move(public_path('uploads'), $new_name);
-            $path = "/uploads/".$new_name;
+            $path = "/uploads/" . $new_name;
             $product->thumb_image = $path;
-           }
-       
-       
+        }
+
+
         $product->name = $request->name;
         $product->qty = $request->qty;
         $product->brand_name = $request->brand_name;
@@ -115,7 +116,7 @@ class UserProductController extends Controller
         $product->short_desc = $request->short_desc;
         $product->status = $request->status;
         $product->save();
-     
+
         return redirect()->route('user.product.index');
     }
 
@@ -125,11 +126,11 @@ class UserProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-           if (File::exists(public_path($product->thumb_image))) {
-                File::delete(public_path($product->thumb_image));
-            }
+        if (File::exists(public_path($product->thumb_image))) {
+            File::delete(public_path($product->thumb_image));
+        }
         $product->delete();
-     
+
         return redirect()->back();
     }
 }

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('product_id');
             $table->string('name');
             $table->double('price');
-            $table->boolean('is_default');
-            $table->boolean('status');
+            $table->boolean('is_default')->default(0);
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }
