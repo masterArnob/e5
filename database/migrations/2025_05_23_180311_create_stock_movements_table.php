@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('product_variant_item_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->enum('type', ['purchase', 'sale', 'adjustment', 'return']);
             $table->integer('quantity');
             $table->text('note')->nullable();
