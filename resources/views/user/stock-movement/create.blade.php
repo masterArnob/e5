@@ -58,13 +58,13 @@
                 var productId = $(this).val();
                 if (productId) {
                     $.ajax({
-                        url: '/user/stock-movement/get-variants/' + productId,
+                        url: '/user/product/variant-items/' + productId,
                         type: 'GET',
                         success: function(data) {
                             $('#product_variant_item_id').empty();
                             $('#product_variant_item_id').append(
                                 '<option value="">Select Variant</option>');
-                            $.each(data, function(key, value) {
+                            $.each(data.data, function(key, value) {
                                 $('#product_variant_item_id').append('<option value="' +
                                     value.id + '">' + value.name + '</option>');
                             });

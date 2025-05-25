@@ -9,30 +9,30 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">Sl</th>
                         <th scope="col">Product Name</th>
                         <th scope="col">Variant Name</th>
+                        <th scope="col">Variant Item Name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Type</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($movements as $movement)
                         <tr>
-                            <th scope="row">{{ $movement->id }}</th>
-                            <td>{{ $movement->product->name }}</td>
-                            <td>{{ $movement->variant->name }}</td>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $movement->product?->name }}</td>
+                            <td>{{ $movement->productVariantItem ? $movement->productVariantItem?->productVariant?->name : 'N/A' }}
+                            </td>
+                            <td>{{ $movement->productVariantItem?->name ?? 'N/A' }}</td>
                             <td>{{ $movement->quantity }}</td>
-                            <td>{{ $movement->type }}</td>
-                            <td>{{ $movement->created_at->format('Y-m-d H:i:s') }}</td>
-                            <td><a href="{{ route('user.stock-movement.edit', ['id' => $movement->id]) }}"
-                                    class="btn btn-success">Edit</a></td>
+                            <td>{{ Str::ucfirst($movement->type) }}</td>
+                            <td>{{ $movement->created_at->format('Y-m-d') }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center">No stock movements found.</td>
+                            <td colspan="6" class="text-center">No stock movements found.</td>
                         </tr>
                     @endforelse
                 </tbody>

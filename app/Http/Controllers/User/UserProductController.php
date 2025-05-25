@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use File;
+use Illuminate\Support\Facades\File;
 
 class UserProductController extends Controller
 {
@@ -132,5 +132,17 @@ class UserProductController extends Controller
         $product->delete();
 
         return redirect()->back();
+    }
+
+    public function variantItemsByProductId($product_id)
+    {
+        $product = Product::findOrFail($product_id);
+        $items = $product->variantItems;
+
+        return response()->json([
+            'status' => true,
+            'data' => $items,
+            'message' => 'Product variant items retrieved successfully.'
+        ]);
     }
 }
