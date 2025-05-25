@@ -26,6 +26,12 @@
             </a>
         </li>
 
+        <li>
+            <a href="{{ route('user.inventory.index') }}" class="nav-link text-white d-flex align-items-center py-3">
+                Stock Report
+            </a>
+        </li>
+
 
         <li>
             <form method="POST" action="{{ route('logout') }}">

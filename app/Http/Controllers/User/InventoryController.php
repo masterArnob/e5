@@ -13,7 +13,15 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //
+        $inventories = Inventory::with(
+            [
+                'productVariantItem.productVariant',
+                'productVariantItem.product'
+            ]
+        )->paginate(10);
+        // dd($inventories);
+
+        return view('user.inventory.index', compact('inventories'));
     }
 
     /**
