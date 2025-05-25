@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\InventoryController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\StockMovementController;
@@ -66,6 +67,11 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user', 'as' => 
     Route::get('stock/edit/{id}', [StockMovementController::class, 'edit'])->name('stock-movement.edit');
     Route::put('stock/update/{id}', [StockMovementController::class, 'update'])->name('stock-movement.update');
     Route::delete('stock/destroy/{id}', [StockMovementController::class, 'destroy'])->name('stock-movement.destroy');
+
+    /**
+     * Inventory Report Route
+     */
+    Route::get('inventory/report', [InventoryController::class, 'index'])->name('inventory.index');
 });
 
 
