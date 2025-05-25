@@ -17,4 +17,19 @@ class StockMovement extends Model
         'quantity',
         'note',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function productVariantItem()
+    {
+        return $this->belongsTo(ProductVariantItem::class)->with(['productVariant']);
+    }
 }

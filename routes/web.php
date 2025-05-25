@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\User\StockMovementController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserProductVariantController;
@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth', 'verified'], 'prefix' => 'user', 'as' => 
      * Product Routes
      */
     Route::resource('product', UserProductController::class);
+    Route::get('product/variant-items/{product_id}', [UserProductController::class, 'variantItemsByProductId'])->name('product.variant-items');
 
     /**
      * Product Variants Routes

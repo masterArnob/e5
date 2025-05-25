@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use InventoryService;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\StockMovement;
 use App\Models\ProductVariantItem;
+use App\Services\InventoryService;
+use App\Http\Controllers\Controller;
 
 class StockMovementController extends Controller
 {
@@ -17,7 +18,10 @@ class StockMovementController extends Controller
      */
     public function index()
     {
-        $movements = auth()->user()->stockMovements()->latest()->paginate(10);
+        $movements = auth()->user()->stockMovements()
+            ->with(['product', 'productVariantItem'])
+            ->latest()
+            ->paginate(10);
         return view('user.stock-movement.index', compact('movements'));
     }
 
@@ -48,19 +52,24 @@ class StockMovementController extends Controller
         ]);
 
         // Save stock movement
-        $movement = StockMovement::create($request->only([
-            'product_id',
-            'product_variant_item_id',
-            'type',
-            'quantity',
-            'note'
-        ]));
+        $movement = StockMovement::create(array_merge(
+            $request->only([
+                'product_id',
+                'product_variant_item_id',
+                'type',
+                'quantity',
+                'note',
+            ]),
+            [
+                'user_id' => auth()->id(),
+            ]
+        ));
 
         // Update inventory
         InventoryService::applyMovement($movement);
 
         // Redirect to index with success message
-        return redirect()->route('stock-movements.create')->with('success', 'Stock movement created successfully.');
+        return redirect()->route('user.stock-movement.create')->with('success', 'Stock movement created successfully.');
     }
 
     /**
